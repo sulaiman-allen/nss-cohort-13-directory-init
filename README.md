@@ -1,12 +1,11 @@
 # nss-cohort-13-directory-init
 
-Copy the projectinit.sh to the dir you want to create and run 
-$ chmod 755
+Copy this to a location in your $PATH
+cp cohort-13-init.sh /usr/local/bin/
 
 This makes the script executable.
+sudo chmod 775 /usr/local/bin/cohort-13-init.sh 
 
-To use, type ./projectinit.sh
+To use, type cohort-13-init.sh in the directory you wish it initialize
 
-Right now the file has to be run from within the user's directory but I would like to put it in place that is in the user's 
-$PATH. Also, the script has the location where the projectstarter directory should be located (~/projectstarter) hardcoded.
-This needs to be changed to a variable that can be changed in one place to suit the student's needs.
+Thanks to Adam Oswalt for pointing out the method to condense this down to one file
