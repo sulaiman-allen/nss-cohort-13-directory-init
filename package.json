@@ -1,0 +1,11 @@
+{
+  "name": "cohort-13-project-starter",
+  "version": "1.0.0",
+  "description": "Shell script for the initial setup of a project directory",
+  "main": "gulpfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Sulaiman Allen <sulaimanallen@gmail.com>",
+  "license": "MIT"
+}
