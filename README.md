@@ -1,6 +1,6 @@
 # nss-cohort-13-directory-init
 
-This is a small script that creates a basic html layout file, creates a .gitignore and fills it with the information needed to block standard files, creates a jshint file for a good amount of errors, makes a javascripts directory, makes a npm file (so you can skip the npm init)and installs the plugins needed for gulp into the local project directory. It essentially does everything laid out in this post:
+This is a small script that creates a basic html layout file, creates a .gitignore and fills it with the information needed to block standard files, creates a jshint file for a good amount of errors, makes a javascripts directory, makes a npm file (so you can skip the npm init)and installs the plugins needed for gulp into the local project directory. It essentially does everything laid out in this post from Joe:
 
 ```bash
 1 create .gitignore Never check in your PM folders to github.
