@@ -9,20 +9,6 @@ node_modules
 bower_components
 EOF
 
-read -d '' PACKAGE <<"EOF"
-{
-  "name": "cohort-13-project-starter",
-  "version": "1.0.0",
-  "description": "Shell script for the initial setup of a project directory",
-  "main": "gulpfile.js",
-  "scripts": {
-    "test": "echo 'Error: no test specified' && exit 1"
-  },
-  "author": "Null",
-  "license": "MIT"
-}
-EOF
-
 read -d '' INDEX <<"EOF"
 <!DOCTYPE html>
 <html>
@@ -90,9 +76,8 @@ EOF
 echo "Installing .gitignore..."
 echo $GITIGNORE > .gitignore
 
-#TODO(adam): change to npm init
-echo "Installing package.json..."
-echo $PACKAGE > package.json
+echo "Running npm init..."
+npm init -y
 
 echo "Installing standard index.html..."
 echo $INDEX > index.html
