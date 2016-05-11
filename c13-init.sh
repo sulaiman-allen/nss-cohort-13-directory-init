@@ -4,7 +4,7 @@
 
 #NOTE(adam): variable definitions for grouped, single point editing
 read -d '' GITIGNORE <<"EOF"
-DS_STORE
+.DS_STORE
 node_modules
 bower_components
 EOF
