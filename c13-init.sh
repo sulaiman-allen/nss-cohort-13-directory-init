@@ -2,48 +2,30 @@
 
 # A script for setting the contents of a directory and creating the init files for package installers
 
-echo "Installing .gitignore..."
-
-echo "DS_Store
+#NOTE(adam): variable definitions for grouped, single point editing
+read -d '' GITIGNORE <<"EOF"
+DS_STORE
+node_modules
 bower_components
-node_modules" > .gitignore
+EOF
 
-echo "Installing package.json..."
+read -d '' INDEX <<"EOF"
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title></title>
+  <link rel="stylesheet" href="">
+</head>
+<body>
 
-echo '{
-  "name": "cohort-13-project-starter",
-  "version": "1.0.0",
-  "description": "Shell script for the initial setup of a project directory",
-  "main": "gulpfile.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "Null",
-  "license": "MIT"
-}' > package.json
+</body>
+</html>
+EOF
 
-echo "Installing standard index.html..."
-
-echo '<!DOCTYPE html>
-  <html>
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title></title>
-    <link rel="stylesheet" href="">
-  </head>
-  <body>
-    
-  </body>
-</html>' > index.html
-
-echo "Installing gulp and dependencies..."
-
-npm install gulp jshint gulp-jshint jshint-stylish gulp-watch --save-dev 
-
-echo "Installing .jshintrc..."
-
-echo '{
+read -d '' JSHINT <<"EOF"
+{
   "node": true,
   "browser": true,
   "bitwise": true,
@@ -66,11 +48,13 @@ echo '{
     "test": false,
     "chatty": true
   }
-}' > .jshintrc
+}
+EOF
 
-echo "Installing gulpfile.js..."
+read -d '' GULP <<"EOF"
+"use strict";
 
-echo "var gulp = require('gulp');
+var gulp = require('gulp');
 var jshint = require('gulp-jshint');
 var watch = require('gulp-watch');
 
@@ -80,13 +64,32 @@ gulp.task('watch', function() {
   gulp.watch('./javascripts/**/*.js', ['lint']);
 });
 
-
 gulp.task('lint', function() {
   return gulp.src('./javascripts/**/*.js')
     .pipe(jshint())
     .pipe(jshint.reporter('jshint-stylish'));
-});" > gulpfile.js
+});
+EOF
+
+
+#NOTE(adam): start of install
+echo "Installing .gitignore..."
+echo $GITIGNORE > .gitignore
+
+echo "Running npm init..."
+npm init -y
+
+echo "Installing standard index.html..."
+echo $INDEX > index.html
+
+echo "Installing gulp and dependencies..."
+npm install gulp jshint gulp-jshint jshint-stylish gulp-watch --save-dev
+
+echo "Installing .jshintrc..."
+echo $JSHINT > .jshintrc
+
+echo "Installing gulpfile.js..."
+echo $GULP > gulpfile.js
 
 echo "Making javascripts directory"
-
 mkdir ./javascripts/
