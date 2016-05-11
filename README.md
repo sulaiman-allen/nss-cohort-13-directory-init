@@ -2,7 +2,7 @@
 
 Once inside the directory, copy this to a location in your $PATH
 ```bash
-cp c13-init.sh /usr/local/bin/
+sudo cp c13-init.sh /usr/local/bin/
 ```
 
 This makes the script executable.
