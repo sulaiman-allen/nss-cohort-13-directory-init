@@ -79,8 +79,14 @@ echo "$GITIGNORE" > .gitignore
 echo "Running npm init..."
 npm init -y
 
-echo "Installing standard index.html..."
-echo "$INDEX" > index.html
+#make sure file doesnt exist
+if [ ! -f "index.html" ]
+then
+  echo "Installing standard index.html..."
+  echo $INDEX > index.html
+else
+  echo "index.html exists, skipping creation."
+fi
 
 echo "Installing gulp and dependencies..."
 npm install gulp jshint gulp-jshint jshint-stylish gulp-watch --save-dev
