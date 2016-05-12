@@ -74,22 +74,22 @@ EOF
 
 #NOTE(adam): start of install
 echo "Installing .gitignore..."
-echo $GITIGNORE > .gitignore
+echo "$GITIGNORE" > .gitignore
 
 echo "Running npm init..."
 npm init -y
 
 echo "Installing standard index.html..."
-echo $INDEX > index.html
+echo "$INDEX" > index.html
 
 echo "Installing gulp and dependencies..."
 npm install gulp jshint gulp-jshint jshint-stylish gulp-watch --save-dev
 
 echo "Installing .jshintrc..."
-echo $JSHINT > .jshintrc
+echo "$JSHINT" > .jshintrc
 
 echo "Installing gulpfile.js..."
-echo $GULP > gulpfile.js
+echo "$GULP" > gulpfile.js
 
 echo "Making javascripts directory"
 mkdir ./javascripts/
