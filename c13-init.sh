@@ -89,7 +89,7 @@ else
 fi
 
 echo "Installing gulp and dependencies..."
-npm install gulp jshint gulp-jshint jshint-stylish gulp-watch --save-dev
+npm install gulp jshint gulp-jshint jshint-stylish gulp-watch --save
 
 echo "Installing .jshintrc..."
 echo "$JSHINT" > .jshintrc
