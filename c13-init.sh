@@ -83,7 +83,7 @@ npm init -y
 if [ ! -f "index.html" ]
 then
   echo "Installing standard index.html..."
-  echo $INDEX > index.html
+  echo "$INDEX" > index.html
 else
   echo "index.html exists, skipping creation."
 fi
