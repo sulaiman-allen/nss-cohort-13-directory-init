@@ -143,7 +143,7 @@ fi
 if [ $GULPINSTALL == true ]
   then
   echo "Installing gulp and dependencies..."
-  npm install gulp jshint gulp-jshint jshint-stylish gulp-watch jasmine-core --save-dev
+  npm install gulp jshint gulp-jshint jshint-stylish gulp-watch --save-dev
 fi
 
 echo "Installing .jshintrc..."
