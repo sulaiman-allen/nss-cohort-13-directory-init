@@ -92,6 +92,9 @@ gulp.task('lint', function() {
 });
 EOF
 
+#NOTE(sule) this decides if the normal gulp install needs to happen. If the -j tag is used at runtime, this updates to false
+GULPINSTALL=true
+
 #TODO(adam): git init as option
 #TODO(adam): README.md with passed in title
 #TODO(adam): jquery option
@@ -113,17 +116,35 @@ else
   echo "index.html exists, skipping creation."
 fi
 
-#NOTE(adam): create tests.html if doesnt exist
-if [ ! -f "tests.html" ]
-then
-  echo "Installing standard tests.html..."
-  echo "$TESTS" > tests.html
-else
-  echo "tests.html exists, skipping creation."
+#NOTE(sule): if the -j switch is entered, install the jasmine testing functionality
+#NOTE(sule): this is still buggy as it will only allow for the testing of one flag being passed in.
+if [ $# -eq 1 ]
+  then
+  if [ $1 == -j ]
+  then
+    #NOTE(adam): create tests.html if doesnt exist
+    if [ ! -f "tests.html" ]
+    then
+      echo "Installing standard tests.html..."
+      echo "$TESTS" > tests.html
+      echo "Making directories..."
+      mkdir ./styles/
+      mkdir ./spec/
+      echo "Installing jasmine, gulp and dependencies..."
+      npm install gulp jshint gulp-jshint jshint-stylish gulp-watch jasmine-core --save-dev
+      GULPINSTALL=false
+    else
+      echo "tests.html exists, skipping creation."
+    fi
+  fi
 fi
 
-echo "Installing gulp and dependencies..."
-npm install gulp jshint gulp-jshint jshint-stylish gulp-watch jasmine-core --save-dev
+#NOTE(sule): this will run only if jasmine hasnt been installed already.
+if [ $GULPINSTALL == true ]
+  then
+  echo "Installing gulp and dependencies..."
+  npm install gulp jshint gulp-jshint jshint-stylish gulp-watch jasmine-core --save-dev
+fi
 
 echo "Installing .jshintrc..."
 echo "$JSHINT" > .jshintrc
@@ -131,7 +152,5 @@ echo "$JSHINT" > .jshintrc
 echo "Installing gulpfile.js..."
 echo "$GULP" > gulpfile.js
 
-echo "Making directories"
+echo "Making javascripts directory"
 mkdir ./javascripts/
-mkdir ./styles/
-mkdir ./spec/
