@@ -118,7 +118,7 @@ fi
 while getopts :j opt; do
   case $opt in
     j)
-      echo "Installing jasmine, gulp and dependencies..."
+      echo "Installing jasmine..."
       npm install jasmine-core --save-dev
       echo "Making spec directory..."
       mkdir -p ./spec/
