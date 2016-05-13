@@ -24,6 +24,27 @@ read -d '' INDEX <<"EOF"
 </html>
 EOF
 
+read -d '' TESTS <<"EOF"
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title></title>
+  <link rel="stylesheet" href="/node_modules/jasmine-core/lib/jasmine-core/jasmine.css">
+</head>
+<body>
+  <script type="text/javascript" src="/node_modules/jasmine-core/lib/jasmine-core/jasmine.js"></script>
+  <script type="text/javascript" src="/node_modules/jasmine-core/lib/jasmine-core/jasmine-html.js"></script>
+  <script type="text/javascript" src="/node_modules/jasmine-core/lib/jasmine-core/boot.js"></script>
+
+  <script type="text/javascript" src="/javascripts/script.js"></script>
+
+  <script type="text/javascript" src="/spec/script.spec.js"></script>
+</body>
+</html>
+EOF
+
 read -d '' JSHINT <<"EOF"
 {
   "node": true,
@@ -71,6 +92,10 @@ gulp.task('lint', function() {
 });
 EOF
 
+#TODO(adam): git init as option
+#TODO(adam): README.md with passed in title
+#TODO(adam): jquery option
+
 
 #NOTE(adam): start of install
 echo "Installing .gitignore..."
@@ -79,7 +104,7 @@ echo "$GITIGNORE" > .gitignore
 echo "Running npm init..."
 npm init -y
 
-#make sure file doesnt exist
+#NOTE(adam): create index.html if doesnt exist
 if [ ! -f "index.html" ]
 then
   echo "Installing standard index.html..."
@@ -88,8 +113,17 @@ else
   echo "index.html exists, skipping creation."
 fi
 
+#NOTE(adam): create tests.html if doesnt exist
+if [ ! -f "tests.html" ]
+then
+  echo "Installing standard tests.html..."
+  echo "$TESTS" > tests.html
+else
+  echo "tests.html exists, skipping creation."
+fi
+
 echo "Installing gulp and dependencies..."
-npm install gulp jshint gulp-jshint jshint-stylish gulp-watch --save
+npm install gulp jshint gulp-jshint jshint-stylish gulp-watch jasmine-core --save-dev
 
 echo "Installing .jshintrc..."
 echo "$JSHINT" > .jshintrc
@@ -97,5 +131,7 @@ echo "$JSHINT" > .jshintrc
 echo "Installing gulpfile.js..."
 echo "$GULP" > gulpfile.js
 
-echo "Making javascripts directory"
+echo "Making directories"
 mkdir ./javascripts/
+mkdir ./styles/
+mkdir ./spec/
