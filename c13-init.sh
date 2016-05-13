@@ -92,9 +92,6 @@ gulp.task('lint', function() {
 });
 EOF
 
-#NOTE(sule) this decides if the normal gulp install needs to happen. If the -j tag is used at runtime, this updates to false
-GULPINSTALL=true
-
 #TODO(adam): git init as option
 #TODO(adam): README.md with passed in title
 #TODO(adam): jquery option
@@ -130,20 +127,15 @@ if [ $# -eq 1 ]
       echo "Making directories..."
       mkdir ./spec/
       echo "Installing jasmine, gulp and dependencies..."
-      npm install gulp jshint gulp-jshint jshint-stylish gulp-watch jasmine-core --save-dev
-      GULPINSTALL=false
+      npm install jasmine-core --save-dev
     else
       echo "tests.html exists, skipping creation."
     fi
   fi
 fi
 
-#NOTE(sule): this will run only if jasmine hasnt been installed already.
-if [ $GULPINSTALL == true ]
-  then
-  echo "Installing gulp and dependencies..."
-  npm install gulp jshint gulp-jshint jshint-stylish gulp-watch jasmine-core --save-dev
-fi
+echo "Installing gulp and dependencies..."
+npm install gulp jshint gulp-jshint jshint-stylish gulp-watch --save-dev
 
 echo "Installing .jshintrc..."
 echo "$JSHINT" > .jshintrc
