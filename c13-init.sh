@@ -128,7 +128,6 @@ if [ $# -eq 1 ]
       echo "Installing standard tests.html..."
       echo "$TESTS" > tests.html
       echo "Making directories..."
-      mkdir ./styles/
       mkdir ./spec/
       echo "Installing jasmine, gulp and dependencies..."
       npm install gulp jshint gulp-jshint jshint-stylish gulp-watch jasmine-core --save-dev
@@ -152,5 +151,6 @@ echo "$JSHINT" > .jshintrc
 echo "Installing gulpfile.js..."
 echo "$GULP" > gulpfile.js
 
-echo "Making javascripts directory"
+echo "Making standard directories"
 mkdir ./javascripts/
+mkdir ./styles/
