@@ -113,27 +113,31 @@ else
   echo "index.html exists, skipping creation."
 fi
 
-#NOTE(sule): if the -j switch is entered, install the jasmine testing functionality
-#NOTE(sule): this is still buggy as it will only allow for the testing of one flag being passed in.
-if [ $# -eq 1 ]
-  then
-  if [ $1 == -j ]
-  then
-    #NOTE(adam): create tests.html if doesnt exist
-    if [ ! -f "tests.html" ]
-    then
-      echo "Installing standard tests.html..."
-      echo "$TESTS" > tests.html
-    else
-      echo "tests.html exists, skipping creation."
-    fi
+#NOTE(adam): handle install options
+#NOTE(sule): with -j switch, install the jasmine testing functionality
+while getopts :j opt; do
+  case $opt in
+    j)
+      echo "Installing jasmine, gulp and dependencies..."
+      npm install jasmine-core --save-dev
+      echo "Making spec directory..."
+      mkdir -p ./spec/
 
-    echo "Installing jasmine, gulp and dependencies..."
-    npm install jasmine-core --save-dev
-    echo "Making spec directory..."
-    mkdir -p ./spec/
-  fi
-fi
+      #NOTE(adam): create tests.html if doesnt exist
+      if [ ! -f "tests.html" ]
+      then
+        echo "Installing standard tests.html..."
+        echo "$TESTS" > tests.html
+      else
+        echo "tests.html exists, skipping creation."
+      fi
+      ;;
+    ?)
+      echo "Invalid option: -$OPTARG" >&2
+      exit 1
+      ;;
+  esac
+done
 
 echo "Installing gulp and dependencies..."
 npm install gulp jshint gulp-jshint jshint-stylish gulp-watch --save-dev
