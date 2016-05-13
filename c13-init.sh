@@ -12,15 +12,15 @@ EOF
 read -d '' INDEX <<"EOF"
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title></title>
-  <link rel="stylesheet" href="">
-</head>
-<body>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title></title>
+    <link rel="stylesheet" href="">
+  </head>
+  <body>
 
-</body>
+  </body>
 </html>
 EOF
 
@@ -94,6 +94,8 @@ EOF
 
 #TODO(adam): git init as option
 #TODO(adam): README.md with passed in title
+#TODO(adam): jquery option
+
 
 #NOTE(adam): start of install
 echo "Installing .gitignore..."
