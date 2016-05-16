@@ -99,7 +99,6 @@ gulp.task('lint', function() {
 });
 EOF
 
-#TODO(adam): git init as option
 #TODO(adam): README.md with passed in title
 
 GITINIT=false
@@ -128,6 +127,11 @@ done
 #NOTE(adam): start of install
 echo "Writing .gitignore..."
 echo "$GITIGNORE" > .gitignore
+
+if [ $GITINIT = true]; then
+  echo "Initializing repo..."
+  git init
+fi
 
 echo "Running npm init..."
 npm init -y
@@ -185,3 +189,6 @@ fi
 echo "Making standard directories..."
 mkdir -p ./javascripts/
 mkdir -p ./styles/
+
+#TODO(adam): touch js & css?
+#TODO(adam): do first commit?
