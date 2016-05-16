@@ -9,7 +9,8 @@ node_modules
 bower_components
 EOF
 
-read -d '' INDEX <<"EOF"
+#TODO(adam): better method of building HTML?
+read -d '' INDEX_START <<"EOF"
 <!DOCTYPE html>
 <html>
   <head>
@@ -20,6 +21,13 @@ read -d '' INDEX <<"EOF"
   </head>
   <body>
 
+EOF
+
+read -d '' INDEX_JQUERY <<"EOF"
+  <script src="/node_modules/jquery/dist/jquery.min.js" type="text/javascript"></script>
+EOF
+
+read -d '' INDEX_END <<"EOF"
   </body>
 </html>
 EOF
@@ -92,46 +100,29 @@ gulp.task('lint', function() {
 });
 EOF
 
-#TODO(adam): git init as option
 #TODO(adam): README.md with passed in title
-#TODO(adam): jquery option
 
-
-#NOTE(adam): start of install
-echo "Installing .gitignore..."
-echo "$GITIGNORE" > .gitignore
-
-echo "Running npm init..."
-npm init -y
-
-#NOTE(adam): create index.html if doesnt exist
-if [ ! -f "index.html" ]
-then
-  echo "Installing standard index.html..."
-  echo "$INDEX" > index.html
-else
-  echo "index.html exists, skipping creation."
-fi
+GITINIT=false
+JASMINEINSTALL=false
+GULPINSTALL=false
+JSHINTINSTALL=false
+JQUERYINSTALL=false
 
 #NOTE(adam): handle install options
 #NOTE(sule): with -j switch, install the jasmine testing functionality
-while getopts :j opt; do
+while getopts :Aghijq opt; do
   case $opt in
-    j)
-      echo "Installing jasmine..."
-      npm install jasmine-core --save-dev
-      echo "Making spec directory..."
-      mkdir -p ./spec/
-
-      #NOTE(adam): create tests.html if doesnt exist
-      if [ ! -f "tests.html" ]
-      then
-        echo "Installing standard tests.html..."
-        echo "$TESTS" > tests.html
-      else
-        echo "tests.html exists, skipping creation."
-      fi
-      ;;
+    A) GITINIT=true
+       JASMINEINSTALL=true
+       GULPINSTALL=true
+       JSHINTINSTALL=true
+       JQUERYINSTALL=true
+       ;;
+    g) GULPINSTALL=true;;
+    h) GULPINSTALL=true; JSHINTINSTALL=true;;
+    i) GITINIT=true;;
+    j) JASMINEINSTALL=true;;
+    q) JQUERYINSTALL=true;;
     ?)
       echo "Invalid option: -$OPTARG" >&2
       exit 1
@@ -139,15 +130,72 @@ while getopts :j opt; do
   esac
 done
 
-echo "Installing gulp and dependencies..."
-npm install gulp jshint gulp-jshint jshint-stylish gulp-watch --save-dev
 
-echo "Installing .jshintrc..."
-echo "$JSHINT" > .jshintrc
+#NOTE(adam): start of install
+echo "Writing .gitignore..."
+echo "$GITIGNORE" > .gitignore
 
-echo "Installing gulpfile.js..."
-echo "$GULP" > gulpfile.js
+if [ $GITINIT = true ]; then
+  echo "Initializing repo..."
+  git init
+fi
+
+echo "Running npm init..."
+npm init -y
+
+#NOTE(adam): create index.html if doesnt exist
+if [ ! -f "index.html" ]; then
+  echo "Writing standard index.html..."
+  echo "$INDEX_START" >> index.html
+
+  if [ $JQUERYINSTALL ]; then
+    echo "$INDEX_JQUERY" >> index.html
+  fi
+
+  echo "$INDEX_END" >> index.html
+else
+  echo "index.html exists, skipping creation."
+fi
+
+if [ $JASMINEINSTALL = true ]; then
+  echo "Installing jasmine..."
+  npm install jasmine-core --save-dev
+  echo "Making tests spec directory..."
+  mkdir -p ./spec/
+
+  #NOTE(adam): create tests.html if doesnt exist
+  if [ ! -f "tests.html" ]; then
+    echo "Writing standard tests.html..."
+    echo "$TESTS" > tests.html
+  else
+    echo "tests.html exists, skipping creation."
+  fi
+fi
+
+if [ $GULPINSTALL = true ]; then
+  echo "Installing gulp..."
+  npm install gulp --savedev
+fi
+
+if [ $JSHINTINSTALL = true ]; then
+  echo "Installing jshint..."
+  npm install jshint gulp-jshint jshint-stylish gulp-watch --save-dev
+
+  echo "Writing .jshintrc..."
+  echo "$JSHINT" > .jshintrc
+
+  echo "Writing gulpfile.js..."
+  echo "$GULP" > gulpfile.js
+fi
+
+if [ $JQUERYINSTALL = true ]; then
+  echo "Installing jQuery..."
+  npm install jquery --save
+fi
 
 echo "Making standard directories..."
 mkdir -p ./javascripts/
 mkdir -p ./styles/
+
+#TODO(adam): touch js & css?
+#TODO(adam): do first commit?
