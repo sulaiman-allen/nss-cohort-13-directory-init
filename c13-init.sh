@@ -9,7 +9,7 @@ node_modules
 bower_components
 EOF
 
-read -d '' INDEX <<"EOF"
+read -d '' INDEX_START <<"EOF"
 <!DOCTYPE html>
 <html>
   <head>
@@ -20,6 +20,13 @@ read -d '' INDEX <<"EOF"
   </head>
   <body>
 
+EOF
+
+read -d '' INDEX_JQUERY <<"EOF"
+  <script src="/node_modules/jquery/dist/jquery.min.js" type="text/javascript"></script>
+EOF
+
+read -d '' INDEX_END <<"EOF"
   </body>
 </html>
 EOF
@@ -94,7 +101,6 @@ EOF
 
 #TODO(adam): git init as option
 #TODO(adam): README.md with passed in title
-#TODO(adam): jquery option
 
 GITINIT=false
 JASMINEINSTALL=false
@@ -106,22 +112,11 @@ JQUERYINSTALL=false
 #NOTE(sule): with -j switch, install the jasmine testing functionality
 while getopts :ghijq opt; do
   case $opt in
-    g)
-      GULPINSTALL=true
-      ;;
-    h)
-      GULPINSTALL=true
-      JSHINTINSTALL=true
-      ;;
-    i)
-      GITINIT=true
-      ;;
-    j)
-      JASMINEINSTALL=true
-      ;;
-    q)
-      JQUERYINSTALL=true
-      ;;
+    g) GULPINSTALL=true;;
+    h) GULPINSTALL=true; JSHINTINSTALL=true;;
+    i) GITINIT=true;;
+    j) JASMINEINSTALL=true;;
+    q) JQUERYINSTALL=true;;
     ?)
       echo "Invalid option: -$OPTARG" >&2
       exit 1
@@ -140,12 +135,18 @@ npm init -y
 #NOTE(adam): create index.html if doesnt exist
 if [ ! -f "index.html" ]; then
   echo "Writing standard index.html..."
-  echo "$INDEX" > index.html
+  echo "$INDEX_START" >> index.html
+
+  if [ $JQUERYINSTALL ]; then
+    echo "$INDEX_JQUERY" >> index.html
+  fi
+
+  echo "$INDEX_END" >> index.html
 else
   echo "index.html exists, skipping creation."
 fi
 
-if [ $JASMINEINSTALL ]; then
+if [ $JASMINEINSTALL = true ]; then
   echo "Installing jasmine..."
   npm install jasmine-core --save-dev
   echo "Making tests spec directory..."
@@ -160,12 +161,12 @@ if [ $JASMINEINSTALL ]; then
   fi
 fi
 
-if [ $GULPINSTALL ]; then
+if [ $GULPINSTALL = true ]; then
   echo "Installing gulp..."
   npm install gulp --savedev
 fi
 
-if [ $JSHINTINSTALL ]; then
+if [ $JSHINTINSTALL = true ]; then
   echo "Installing jshint..."
   npm install jshint gulp-jshint jshint-stylish gulp-watch --save-dev
 
@@ -174,6 +175,11 @@ if [ $JSHINTINSTALL ]; then
 
   echo "Writing gulpfile.js..."
   echo "$GULP" > gulpfile.js
+fi
+
+if [ $JQUERYINSTALL = true ]; then
+  echo "Installing jQuery..."
+  npm install jquery --save
 fi
 
 echo "Making standard directories..."
