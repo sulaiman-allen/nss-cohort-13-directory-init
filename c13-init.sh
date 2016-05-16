@@ -96,6 +96,39 @@ EOF
 #TODO(adam): README.md with passed in title
 #TODO(adam): jquery option
 
+GITINIT=false
+JASMINEINSTALL=false
+GULPINSTALL=false
+JSHINTINSTALL=false
+JQUERYINSTALL=false
+
+#NOTE(adam): handle install options
+#NOTE(sule): with -j switch, install the jasmine testing functionality
+while getopts :ghijq opt; do
+  case $opt in
+    g)
+      GULPINSTALL=true
+      ;;
+    h)
+      GULPINSTALL=true
+      JSHINTINSTALL=true
+      ;;
+    i)
+      GITINIT=true
+      ;;
+    j)
+      JASMINEINSTALL=true
+      ;;
+    q)
+      JQUERYINSTALL=true
+      ;;
+    ?)
+      echo "Invalid option: -$OPTARG" >&2
+      exit 1
+      ;;
+  esac
+done
+
 
 #NOTE(adam): start of install
 echo "Installing .gitignore..."
@@ -105,48 +138,43 @@ echo "Running npm init..."
 npm init -y
 
 #NOTE(adam): create index.html if doesnt exist
-if [ ! -f "index.html" ]
-then
+if [ ! -f "index.html" ]; then
   echo "Installing standard index.html..."
   echo "$INDEX" > index.html
 else
   echo "index.html exists, skipping creation."
 fi
 
-#NOTE(adam): handle install options
-#NOTE(sule): with -j switch, install the jasmine testing functionality
-while getopts :j opt; do
-  case $opt in
-    j)
-      echo "Installing jasmine..."
-      npm install jasmine-core --save-dev
-      echo "Making spec directory..."
-      mkdir -p ./spec/
+if [ $JASMINEINSTALL ]; then
+  echo "Installing jasmine..."
+  npm install jasmine-core --save-dev
+  echo "Making spec directory..."
+  mkdir -p ./spec/
 
-      #NOTE(adam): create tests.html if doesnt exist
-      if [ ! -f "tests.html" ]
-      then
-        echo "Installing standard tests.html..."
-        echo "$TESTS" > tests.html
-      else
-        echo "tests.html exists, skipping creation."
-      fi
-      ;;
-    ?)
-      echo "Invalid option: -$OPTARG" >&2
-      exit 1
-      ;;
-  esac
-done
+  #NOTE(adam): create tests.html if doesnt exist
+  if [ ! -f "tests.html" ]; then
+    echo "Installing standard tests.html..."
+    echo "$TESTS" > tests.html
+  else
+    echo "tests.html exists, skipping creation."
+  fi
+fi
 
-echo "Installing gulp and dependencies..."
-npm install gulp jshint gulp-jshint jshint-stylish gulp-watch --save-dev
+if [ $GULPINSTALL ]; then
+  echo "Installing gulp..."
+  npm install gulp --savedev
+fi
 
-echo "Installing .jshintrc..."
-echo "$JSHINT" > .jshintrc
+if [ $JSHINTINSTALL ]; then
+  echo "Installing jshint..."
+  npm install jshint gulp-jshint jshint-stylish gulp-watch --save-dev
 
-echo "Installing gulpfile.js..."
-echo "$GULP" > gulpfile.js
+  echo "Installing .jshintrc..."
+  echo "$JSHINT" > .jshintrc
+
+  echo "Installing gulpfile.js..."
+  echo "$GULP" > gulpfile.js
+fi
 
 echo "Making standard directories..."
 mkdir -p ./javascripts/
