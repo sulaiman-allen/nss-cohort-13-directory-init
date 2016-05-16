@@ -9,6 +9,7 @@ node_modules
 bower_components
 EOF
 
+#TODO(adam): better method of building HTML?
 read -d '' INDEX_START <<"EOF"
 <!DOCTYPE html>
 <html>
@@ -109,8 +110,14 @@ JQUERYINSTALL=false
 
 #NOTE(adam): handle install options
 #NOTE(sule): with -j switch, install the jasmine testing functionality
-while getopts :ghijq opt; do
+while getopts :Aghijq opt; do
   case $opt in
+    A) GITINIT=true
+       JASMINEINSTALL=true
+       GULPINSTALL=true
+       JSHINTINSTALL=true
+       JQUERYINSTALL=true
+       ;;
     g) GULPINSTALL=true;;
     h) GULPINSTALL=true; JSHINTINSTALL=true;;
     i) GITINIT=true;;
@@ -128,7 +135,7 @@ done
 echo "Writing .gitignore..."
 echo "$GITIGNORE" > .gitignore
 
-if [ $GITINIT = true]; then
+if [ $GITINIT = true ]; then
   echo "Initializing repo..."
   git init
 fi
