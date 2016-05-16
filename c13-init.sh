@@ -131,7 +131,7 @@ done
 
 
 #NOTE(adam): start of install
-echo "Installing .gitignore..."
+echo "Writing .gitignore..."
 echo "$GITIGNORE" > .gitignore
 
 echo "Running npm init..."
@@ -139,7 +139,7 @@ npm init -y
 
 #NOTE(adam): create index.html if doesnt exist
 if [ ! -f "index.html" ]; then
-  echo "Installing standard index.html..."
+  echo "Writing standard index.html..."
   echo "$INDEX" > index.html
 else
   echo "index.html exists, skipping creation."
@@ -148,12 +148,12 @@ fi
 if [ $JASMINEINSTALL ]; then
   echo "Installing jasmine..."
   npm install jasmine-core --save-dev
-  echo "Making spec directory..."
+  echo "Making tests spec directory..."
   mkdir -p ./spec/
 
   #NOTE(adam): create tests.html if doesnt exist
   if [ ! -f "tests.html" ]; then
-    echo "Installing standard tests.html..."
+    echo "Writing standard tests.html..."
     echo "$TESTS" > tests.html
   else
     echo "tests.html exists, skipping creation."
@@ -169,10 +169,10 @@ if [ $JSHINTINSTALL ]; then
   echo "Installing jshint..."
   npm install jshint gulp-jshint jshint-stylish gulp-watch --save-dev
 
-  echo "Installing .jshintrc..."
+  echo "Writing .jshintrc..."
   echo "$JSHINT" > .jshintrc
 
-  echo "Installing gulpfile.js..."
+  echo "Writing gulpfile.js..."
   echo "$GULP" > gulpfile.js
 fi
 
