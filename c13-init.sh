@@ -174,7 +174,7 @@ fi
 
 if [ $GULPINSTALL = true ]; then
   echo "Installing gulp..."
-  npm install gulp --savedev
+  npm install gulp --save-dev
 fi
 
 if [ $JSHINTINSTALL = true ]; then
