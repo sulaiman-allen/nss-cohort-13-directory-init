@@ -16,7 +16,16 @@ This is a small script that creates a basic html layout file, creates a .gitigno
 8 Create .jshintrc and paste in settings from the link above
 ```
 
-To Install:
+# To Install:
+
+Perform a git clone into the directory of your choice. This is just a temporary directory from which to copy the file later.
+```bash
+git clone https://github.com/sulaiman-allen/nss-cohort-13-directory-init.git
+```
+Switch to the directory
+```bash
+cd nss-cohort-13-directory-init
+```
 
 Once inside the directory, copy this to a location in your $PATH)
 ```bash
